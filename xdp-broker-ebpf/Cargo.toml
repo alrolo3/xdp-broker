@@ -5,9 +5,9 @@ edition.workspace = true
 
 [dependencies]
 xdp-broker-common = { path = "../xdp-broker-common" }
-
 aya-ebpf = { workspace = true }
 aya-log-ebpf = { workspace = true }
+network-types = "0.1.0"
 
 [build-dependencies]
 which = { workspace = true }
