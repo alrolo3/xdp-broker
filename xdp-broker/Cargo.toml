@@ -38,7 +38,7 @@ cargo_metadata = { workspace = true }
 # Finally note that *any* usage of `artifact = ...` in *any* Cargo.toml in the workspace breaks
 # workflows with stable cargo; stable cargo outright refuses to load manifests that use unstable
 # features.
-ebpf-test-ebpf = { path = "../xdp-broker-ebpf" }
+xdp-broker-ebpf = { path = "../xdp-broker-ebpf" }
 
 [[bin]]
 name = "xdp-broker"

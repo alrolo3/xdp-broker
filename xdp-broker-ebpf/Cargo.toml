@@ -4,7 +4,7 @@ version = "0.1.0"
 edition.workspace = true
 
 [dependencies]
-ebpf-test-common = { path = "../xdp-broker-common" }
+xdp-broker-common = { path = "../xdp-broker-common" }
 
 aya-ebpf = { workspace = true }
 aya-log-ebpf = { workspace = true }
