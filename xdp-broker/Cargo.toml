@@ -14,6 +14,8 @@ aya-log = { workspace = true }
 env_logger = { workspace = true }
 libc = { workspace = true }
 log = { workspace = true }
+rtnetlink = { workspace = true, version = "1.0.0", features = ["tokio_socket"] }
+futures = "0.3" # rtnetlink streams use this
 tokio = { workspace = true, features = [
     "macros",
     "rt",
@@ -22,6 +24,7 @@ tokio = { workspace = true, features = [
     "signal",
 ] }
 clap = { workspace = true, features = ["derive"] }
+bpf = "0.1.4"
 [build-dependencies]
 anyhow = { workspace = true }
 aya-build = { workspace = true }

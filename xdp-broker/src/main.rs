@@ -1,9 +1,12 @@
 use anyhow::Context as _;
+use aya::maps::{DevMapHash, HashMap};
 use aya::programs::{Xdp, XdpFlags};
 use clap::Parser;
 #[rustfmt::skip]
 use log::{debug, warn};
 use tokio::signal;
+use xdp_broker_common::Backend;
+use rtnetlink::{Handle, new_connection};
 
 #[derive(Debug, Parser)]
 struct Opt {
@@ -53,11 +56,25 @@ async fn main() -> anyhow::Result<()> {
             });
         }
     }
+
+
     let Opt { iface } = opt;
     let program: &mut Xdp = ebpf.program_mut("xdp_broker").unwrap().try_into()?;
     program.load()?;
     program.attach(&iface, XdpFlags::SKB_MODE)
         .context("failed to attach the XDP program with default flags - try changing XdpFlags::default() to XdpFlags::SKB_MODE")?;
+
+    {
+        let mut vni_backends: HashMap<_, u32, Backend> = HashMap::try_from(ebpf.map_mut("VNI_BACKENDS").unwrap())?;
+        let backend_test: Backend = Backend { if_index: 11, flags: 0 };
+        vni_backends.insert(1000, backend_test, 0).expect("TODO: panic message");
+    }
+
+    {
+        let mut redirect_map: DevMapHash<_> = DevMapHash::try_from(ebpf.map_mut("REDIRECT_MAP").unwrap())?;
+        // Donde pone NONE se puede pasar un Option<&ProgramFd> para que se redirija el paquete a otro XDP program
+        redirect_map.insert(11, 11, None, 0).expect("TODO: panic message");
+    }
 
     let ctrl_c = signal::ctrl_c();
     println!("Waiting for Ctrl-C...");

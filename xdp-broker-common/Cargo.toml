@@ -8,9 +8,11 @@ license.workspace = true
 [features]
 default = []
 user = ["aya"]
+ebpf = ["aya-ebpf"] # <--- ADD THIS LINE
 
 [dependencies]
 aya = { workspace = true, optional = true }
+aya-ebpf = { workspace = true, optional = true } # <--- ADD THIS LINE
 
 [lib]
 path = "src/lib.rs"
